@@ -1,0 +1,39 @@
+server:
+  port: 9999
+  use-forward-headers: true 
+spring.application.name: zuul
+
+zuul:
+  host:
+    socket-timeout-millis: 60000
+  add-host-header: true
+  add-proxy-headers: true
+  ignored-services: "*"
+  routes:
+    api:
+      path: /api/**
+      service-id: resource
+      sensitiveHeaders:
+      strip-prefix: false
+    uaa:
+      path: /uaa/**
+      service-id: uaa
+      sensitiveHeaders:
+      strip-prefix: false
+    client:
+      path: /client/**
+      service-id: client
+      sensitiveHeaders:
+      strip-prefix: false
+
+eureka.client.service-url.defaultZone: http://localhost:8761/eureka/
+
+ribbon:
+  ConnectTimeout: 60000
+  ReadTimeout: 600000
+hystrix:
+    command:
+        default:
+            execution:
+                timeout:
+                    enabled: false
